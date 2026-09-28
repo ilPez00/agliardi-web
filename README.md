@@ -46,29 +46,43 @@ open http://localhost:3000/agliardi/
 > Note the trailing slash: an earthworks site is fine on `/agliardi/`; bare
 > `/agliardi` (no slash) is handled by the Vercel rewrite rule (see deploy).
 
-## Deploy — temporary path on praxisweb.xyz
+## Deploy — temporary path on praxisweb.xyz (how it actually works)
 
-This repo becomes a standalone Vercel project, then praxis_webapp mounts it
-under `/agliardi/` via a rewrite. Two manual steps:
+**praxisweb.xyz is NOT Vercel/Railway/hosted.** It is served by the
+`praxis-webapp` backend (`pansa`, Cloudflare tunnel `praxis-edge`) which runs
+`scripts/auto_update.sh` every 5 minutes: fast-forward `main` → `npm ci` →
+`npm run build` (vite copies `client/public/*` → `client/dist/`) → restart
+`praxis-backend.service`. Express serves `client/dist/` via `express.static`
+before the SPA `/index.html` fallback.
 
-1. **Create the agliardi project** (do once):
-   `vercel` (or Vercel Dashboard → New Project → import this repo) on the
-   `main` branch. Project name: `agliardi-web`. Default output `.` (static).
-   → You get an origin like `https://agliardi-web.vercel.app`.
+So `/agliardi/` is live simply by having the files on disk. Two places matter:
 
-2. **Add rewrite in praxis_webapp** (`client/vercel.json`):
+- **Durable (survives rebuilds):** `client/public/agliardi/` committed in
+  `ilPez00/praxis_webapp` — vite copies it to `client/dist/agliardi/` on every
+  `npm run build`.
+- **Immediate (served right now, in the live `client/dist`):** the same files
+  were copied into `client/dist/agliardi/` on the host, so the site answered
+  before the next 5-minute build tick.
 
-   ```jsonc
-   "rewrites": [
-     { "source": "/agliardi/:path*", "destination": "https://agliardi-web.vercel.app/:path*" },
-     { "source": "/api/:path*",        "destination": "https://web-production-646a4.up.railway.app/api/:path*" },
-     { "source": "/(.*)",              "destination": "/index.html" }
-   ]
+There is **no external Vercel Pages** and **no `vercel.json` rewrite**. The
+`agliardi-web` repo (this one) is the source of record / future home; the
+canonical deploy repo is `ilPez00/praxis_webapp` (`main`).
+
+### To redeploy / update content
+
+1. Edit files here (root `index.html`, `img/`).
+2. Commit + push to `ilPez00/agliardi-web` (source of truth), **and** mirror into
+   the deploy repo:
+   ```bash
+   cp index.html img /home/gio/praxis_webapp/client/public/agliardi/
+   cd /home/gio/praxis_webapp
+   git add client/public/agliardi && git commit -m "chore: update Agliardi site" && git push origin main
    ```
-   Order matters: the `/agliardi` rewrite must precede the SPA catch-all.
+3. Either wait for the next `praxis-autoupdate.timer` tick (≤5 min), or trigger
+   `npm run build` in `client/` + restart `praxis-backend.service` on `pansa`.
 
-Push to `main` here ⇒ auto-deploy (new content).
-Push to praxis `main` ⇒ new rewrite rule active.
+> ⚠️ If `praxis_webapp` has uncommitted changes (e.g. `docs/DEV_PLAN.md` is
+> dirty), `auto_update.sh` **refuses** to deploy — commit/stash them first.
 
 ## TODO
 
