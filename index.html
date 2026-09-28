@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Agliardi S.n.c. — Autotrasporti e Scavi | Carisolo (TN)</title>
+<meta name="description" content="Agliardi S.n.c. di Agliardi Franco & C., via Presanella 1 — 38080 Carisolo (TN). Scavi e movimento terra, demolizioni, autotrasporti merci, manutenzione strade, sgombero neve in Val Rendena e Trentino-Alto Adige." />
+<style>
+  /* Agliardi — temporary site. Visual system mirrors the praxis_webapp design
+     tokens (spacing/radius/shadow) so the two projects stay compositionally
+     consistent. Brand maps to an earth brown; praxis blue #007AFF is unsuitable
+     for an earthworks company.
+     Source of tokens: client/AGENTS.md + docs/IMPLEMENTATION_SUMMARY.md */
+  :root{
+    --praxis-primary:#8B5A2B;      /* earth brown (was iOS blue #007AFF) */
+    --praxis-secondary:#2e3d2f;     /* dark slate */
+    --praxis-tertiary:#8d6a3c;      /* amber */
+    --bg-primary:#ffffff;
+    --bg-secondary:#f7f4f0;
+    --bg-tertiary:#ffffff;
+    --text-primary:#2e3d2f;
+    --text-secondary:#5a5a5a;
+    --border-light:#e2ddd7;
+    --border-medium:#d2ccc3;
+    --shadow-sm:0 1px 3px rgba(0,0,0,.04);
+    --shadow-md:0 4px 12px rgba(0,0,0,.06);
+    --transition-base:.15s ease;
+    --transition-fast:.12s ease;
+
+    /* praxis spacing scale */
+    --spacing-xs:4px;  --spacing-sm:8px; --spacing-md:16px; --spacing-lg:24px; --spacing-xl:32px;
+    /* praxis radius scale */
+    --radius-sm:8px;   --radius-md:12px; --radius-lg:16px;   --radius-xl:24px;
+  }
+  *,*:before,*:after{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","SF Pro Display","Helvetica Neue",Arial,sans-serif;
+    font-weight:400;
+    background:var(--bg-secondary);
+    color:var(--text-primary);
+    line-height:1.6;
+    font-size:clamp(1rem,2.2vw,1.1rem);
+  }
+  a{color:var(--praxis-primary);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  header{
+    background:linear-gradient(135deg,var(--praxis-primary),var(--praxis-secondary));
+    color:#fff;
+    padding:clamp(2.25rem,6vw,3.5rem) var(--spacing-md);
+    text-align:center;
+  }
+  header h1{font-size:clamp(1.7rem,4vw,2.3rem);margin:0 0 var(--spacing-xs);font-weight:700}
+  header p{margin:0;font-size:clamp(.9rem,1.8vw,1.05rem);opacity:.92}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:var(--spacing-xl) var(--spacing-md)}
+
+  section{margin-bottom:var(--spacing-xl)}
+  h2{
+    font-size:clamp(1.3rem,2.6vw,1.5rem);
+    color:var(--praxis-primary);
+    border-bottom:3px solid var(--praxis-tertiary);
+    display:inline-block;
+    padding-bottom:.3rem;
+    margin-top:0;
+  }
+
+  /* praxis action-card language */
+  .actions-grid,.services,.goals-grid{display:grid;gap:var(--spacing-md);grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+  .card,.action-card{
+    background:var(--bg-primary);
+    border:1px solid var(--border-light);
+    border-radius:var(--radius-md);
+    padding:var(--spacing-lg);
+    box-shadow:var(--shadow-sm);
+    transition:all var(--transition-base);
+    text-decoration:none;
+    color:var(--text-primary);
+  }
+  .card:hover,.action-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+  .card strong{display:block;font-weight:600;margin-bottom:.3rem;color:var(--praxis-primary)}
+
+  .cta{display:flex;flex-wrap:gap:var(--spacing-sm);justify-content:center;margin-top:var(--spacing-md);gap:var(--spacing-sm)}
+  .btn{
+    display:inline-block;background:var(--praxis-tertiary);color:#fff;
+    padding:.8rem 1.4rem;border-radius:999px;font-weight:600;font-size:.95rem;
+    border:2px solid var(--praxis-tertiary);transition:background var(--transition-fast),color var(--transition-fast)
+  }
+  .btn.outline{background:transparent;color:var(--praxis-primary)}
+  .btn.outline:hover{background:rgba(139,90,43,.08)}
+  .btn:hover{filter:brightness(1.05)}
+
+  .gallery{
+    display:grid;
+    gap:var(--spacing-md);
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  }
+  .gallery a{display:block;border:1px solid var(--border-light);border-radius:var(--radius-sm);overflow:hidden;box-shadow:var(--shadow-sm);display:flex}
+  .gallery img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover}
+  .gallery a:focus{outline:2px solid var(--praxis-primary)}
+
+  .map-wrap{border:1px solid var(--border-medium);border-radius:var(--radius-md);overflow:hidden;height:clamp(280px,50vw,420px)}
+
+  .contact dl{display:grid;gap:.25rem}
+  .contact dt{font-weight:600;color:var(--praxis-primary);margin-top:.75rem;font-size:.9rem}
+  .contact dd{margin:.15rem 0 0}
+
+  footer{text-align:center;color:var(--text-secondary);font-size:.85rem;padding:clamp(1.25rem,3vw,1.75rem)}
+  .small{margin-top:var(--spacing-md);padding-top:var(--spacing-md);color:var(--text-secondary);font-size:.8rem;border-top:1px solid var(--border-light)}
+  .placeholder{background:#fff7e6;border:1px dashed #e2ccc5;color:#7a4a1c;font-size:.8rem;padding:.4rem .7rem;border-radius:var(--radius-sm)}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Agliardi S.n.c.</h1>
+  <p>Autotrasporti e Scavi — Carisolo (TN), Val Rendena</p>
+</header>
+
+<div class="wrap">
+
+  <section class="cta">
+    <a class="btn" href="tel:0465501085">📞 0465 501085</a>
+    <a class="btn outline" href="mailto:agliardisnc.scavi@gmail.com">📧 Email</a>
+  </section>
+
+  <section>
+    <h2>Servizi</h2>
+    <div class="services">
+      <div class="card"><strong>Scavi e movimento terra</strong>Lavori in canalone, pendii e trincee — escavatore cingolato CAT 323D.</div>
+      <div class="card"><strong>Demolizioni</strong>Razzami, strutture leggere, smontaggi controllati.</div>
+      <div class="card"><strong>Trasporto merci in conto terzi</strong>Camion ribaltabili, carichi in quota su sterrati.</div>
+      <div class="card"><strong>Manutenzione strade</strong>Opere di contenimento, livellamenti, sistemazione sporgenti.</div>
+      <div class="card"><strong>Sgombero neve</strong>Spazzamento e movimentazione neve in località escursionistiche.</div>
+      <div class="card"><strong>Frantumazione pietre</strong>Calcestruzzo, pietre da costruzione, sabbia.</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Galleria</h2>
+    <p style="color:var(--text-secondary)">Le foto sono estratte dal profilo Instagram dell’azienda e mostrano interventi reali in Val Rendena.</p>
+    <div class="gallery">
+      <a href="img/scavo-01.jpg" target="_blank"><img src="img/scavo-01.jpg" alt="Scavo in canalone — Agliardi" loading="lazy"></a>
+      <a href="img/scavo-02.jpg" target="_blank"><img src="img/scavo-02.jpg" alt="Escavatore cingolato in pendenza — Agliardi" loading="lazy"></a>
+      <a href="img/scavo-03.jpg" target="_blank"><img src="img/scavo-03.jpg" alt="Camion tipper in carreggiata — Agliardi" loading="lazy"></a>
+      <a href="img/scavo-04.jpg" target="_blank"><img src="img/scavo-04.jpg" alt="Movimento terra in canale — Agliardi" loading="lazy"></a>
+      <a href="img/scavo-05.jpg" target="_blank"><img src="img/scavo-05.jpg" alt="Carico in quota — Agliardi" loading="lazy"></a>
+      <a href="img/scavo-06.jpg" target="_blank"><img src="img/scavo-06.jpg" alt="Lavori stradali in località — Agliardi" loading="lazy"></a>
+      <a href="img/scavo-07.jpg" target="_blank"><img src="img/scavo-07.jpg" alt="Frantumazione roccia — Agliardi" loading="lazy"></a>
+      <a href="img/scavo-08.jpg" target="_blank"><img src="img/scavo-08.jpg" alt="Movimentazione neve — Agliardi" loading="lazy"></a>
+      <a href="img/scavo-09.jpg" target="_blank"><img src="img/scavo-09.jpg" alt="Sito in Val Rendena — Agliardi" loading="lazy"></a>
+      <a href="img/scavo-10.jpg" target="_blank"><img src="img/scavo-10.jpg" alt="Sistemazione argine — Agliardi" loading="lazy"></a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Dove siamo</h2>
+    <p>Operiamo prevalentemente in <strong>Val Rendena</strong> e in tutto il territorio del <strong>Trentino-Alto Adige</strong>, con sede a Carisolo.</p>
+    <div class="map-wrap">
+      <iframe
+        width="100%" height="100%" frameborder="0" scrolling="no"
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.openstreetmap.org/export/embed/openstreetmap.html?bbox=10.754,46.164,10.767,46.170&layer=Q&marker=46.16716,10.76068"
+        title="Mappa: Via Presanella 1, Carisolo (TN)"
+      ></iframe>
+    </div>
+    <p style="margin-top:.5rem"><small><a href="https://www.openstreetmap.org/?mlat=46.16716&mlon=10.76068#map=16/46.16716/10.76068&layers=Q" target="_blank" rel="noopener">Apri in OpenStreetMap</a></small></p>
+  </section>
+
+  <section>
+    <h2>Chi siamo</h2>
+    <p>
+      Siamo un'azienda familiare di <strong>Carisolo (TN)</strong>, in cuore della Val Rendena,
+      specializzata in <strong>scavi, movimento terra, demolizioni e autotrasporti</strong>.
+      Operiamo in tutta la regione del Trentino-Alto Adige e, in particolare, all’interno della
+      Comunità delle Giudicarie, dove conosciamo i territori e le esigenze delle attività locali
+      — dal cantiere in quota alle opere di contenimento in valle.
+    </p>
+    <p>
+      La nostra offerta è pensata per professionisti, imprese ed enti pubblici: combiniamo
+      l'affidabilità delle autotrasportazioni in conto terzi con la capacità tecnica della
+      meccanizzazione leggera e media, intervenendo in aree difficili da raggiungere e in
+      contesti sensibili (canali, strade secondarie, penseri). Il fattore distintivo è la
+      <strong>rapida risposta logistica</strong>: parte dal parco macchine
+      (scaricatori, escavatori cingolati, camion tipper) e dall’esperienza diretta dei
+      autista-operai.
+    </p>
+    <p style="font-size:.9rem">
+      Le informazioni sono state raccolte da fonti pubbliche (Pagine Gialle, Instagram).
+      Questo è un sito <strong>provvisorio</strong>: segnalaci integrazioni o correzioni all’indirizzo
+      <a href="mailto:agliardisnc.scavi@gmail.com">agliardisnc.scavi@gmail.com</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>Contatti</h2>
+    <dl class="contact">
+      <dt>Ragione sociale</dt><dd>Agliardi S.n.c. di Agliardi Franco &amp; C.</dd>
+      <dt>Sede</dt><dd>Via Presanella, 1 — 38080 Carisolo (TN)</dd>
+      <dt>Telefono</dt><dd><a href="tel:0465501085">0465 501085</a></dd>
+      <dt>Email</dt><dd><a href="mailto:agliardisnc.scavi@gmail.com">agliardisnc.scavi@gmail.com</a></dd>
+      <dt>P.IVA</dt><dd>02143840227</dd>
+      <dt>Instagram</dt><dd><a href="https://www.instagram.com/agliardi_autotrasporti_e_scavi/" target="_blank" rel="noopener">@agliardi_autotrasporti_e_scavi</a></dd>
+      <dt>Orari</dt><dd><span class="placeholder">Non indicati in fonti pubbliche — su appuntamento.</span></dd>
+    </dl>
+  </section>
+
+  <p class="small">
+    Sito provvisorio. In futuro potrà spostarsi su un dominio dedicato
+    (es. <code>agliardiweb.xyz</code>) o sostituirsi con un sito su misura.
+  </p>
+
+</div>
+
+<footer>
+  Agliardi S.n.c. — Autotrasporti e Scavi · Carisolo (TN) · &copy; 2025
+</footer>
+
+</body>
+</html>

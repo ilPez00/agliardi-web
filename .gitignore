@@ -1,0 +1,10 @@
+# build artifacts
+node_modules/
+*.local
+.venv/
+
+# editor
+.vscode/
+.idea/
+*.swp
+.DS_Store
